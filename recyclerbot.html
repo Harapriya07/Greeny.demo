@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Greeny – Recycler Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #eef1f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.chat-container {
+    width: 460px;
+    height: 680px;
+    background: #f9fafb;
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+.chat-header {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: white;
+    padding: 18px;
+}
+
+.chat-header h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.chat-header p {
+    margin-top: 4px;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+
+.chat-body {
+    flex: 1;
+    padding: 18px;
+    overflow-y: auto;
+}
+
+
+.message {
+    display: flex;
+    margin-bottom: 14px;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+.bubble {
+    max-width: 78%;
+    padding: 13px 15px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+.bot .bubble {
+    background: #e8eefc;
+    color: #1e293b;
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+}
+
+
+.user .bubble {
+    background: #334155;
+    color: #ffffff;
+    border-radius: 14px;
+    border-bottom-right-radius: 4px;
+}
+
+.bubble img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 6px;
+}
+
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    background: #ffffff;
+    border-top: 1px solid #d1d5db;
+    align-items: center;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 24px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+    font-size: 14px;
+}
+
+.upload-btn {
+    background: #2563eb;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.chat-input button {
+    background: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.upload-btn:hover,
+.chat-input button:hover {
+    background: #1e3a8a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+
+    <div class="chat-header">
+        <h1>Greeny – Recycler Console 🤖</h1>
+        <p>Operations • Valuation • Rewards</p>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+        <div class="message bot">
+            <div class="bubble">
+                Welcome Recycler 👋<br>
+                Upload waste images or ask about:<br>
+                • Green coin allocation<br>
+                • Waste value & quality<br>
+                • Pickup & contamination checks
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input">
+        <label for="imageInput" class="upload-btn">📷</label>
+        <input type="file" id="imageInput" accept="image/*" hidden>
+
+        <input type="text" id="userInput" placeholder="Ask recycler assistant...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script>
+const chatBody = document.getElementById("chatBody");
+const input = document.getElementById("userInput");
+
+
+function sendMessage() {
+    const message = input.value.trim();
+    if (!message) return;
+
+    chatBody.innerHTML += `
+        <div class="message user">
+            <div class="bubble">${message}</div>
+        </div>
+    `;
+    input.value = "";
+
+    generateRecyclerReply(message.toLowerCase());
+}
+
+
+input.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+
+
+function generateRecyclerReply(msg) {
+    let reply = "";
+
+    if (msg.includes("plastic")) {
+        reply = `
+        ♻️ <b>Plastic Waste (High Value)</b><br>
+        • Category: Dry recyclable<br>
+        • Market value: Medium–High<br>
+        • Contamination check: REQUIRED<br>
+        🪙 <b>Suggested reward:</b> 5 Green Coins per clean item
+        `;
+    }
+
+    else if (msg.includes("paper") || msg.includes("notebook")) {
+        reply = `
+        📄 <b>Paper Waste</b><br>
+        • Category: Dry recyclable<br>
+        • Reject if wet or oily<br>
+        • Bale separately for resale<br>
+        🪙 <b>Suggested reward:</b> 2 Green Coins
+        `;
+    }
+
+    else if (msg.includes("glass")) {
+        reply = `
+        🧴 <b>Glass Waste</b><br>
+        • Category: Recyclable (fragile)<br>
+        • Transport separately<br>
+        • High breakage risk<br>
+        🪙 <b>Suggested reward:</b> 4 Green Coins
+        `;
+    }
+
+    else if (msg.includes("wet") || msg.includes("food")) {
+        reply = `
+        🍃 <b>Wet Waste</b><br>
+        • No resale value<br>
+        • Send to composting unit<br>
+        • Reject if mixed with plastic<br>
+        🪙 <b>Suggested reward:</b> 1 Green Coin
+        `;
+    }
+
+    else if (msg.includes("coins") || msg.includes("reward")) {
+        reply = `
+        🪙 <b>Green Coin Reference</b><br>
+        Plastic: 5<br>
+        Glass: 4<br>
+        Paper: 2<br>
+        Wet waste: 1
+        `;
+    }
+
+    else {
+        reply = `
+        ⚠️ Please specify waste type or upload an image.<br>
+        Supported: Plastic, Paper, Glass, Wet waste.
+        `;
+    }
+
+    setTimeout(() => {
+        chatBody.innerHTML += `
+            <div class="message bot">
+                <div class="bubble">${reply}</div>
+            </div>
+        `;
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 500);
+}
+
+
+document.getElementById("imageInput").addEventListener("change", function() {
+    const file = this.files[0];
+    if (!file) return;
+
+    const imgURL = URL.createObjectURL(file);
+
+    chatBody.innerHTML += `
+        <div class="message user">
+            <div class="bubble">
+                <img src="${imgURL}">
+            </div>
+        </div>
+    `;
+
+    setTimeout(() => {
+        chatBody.innerHTML += `
+            <div class="message bot">
+                <div class="bubble">
+                    🔍 <b>Recycler Analysis</b><br>
+                    Waste appears recyclable.<br>
+                    Check cleanliness before approval.<br>
+                    🪙 Recommended reward: <b>5 Green Coins</b>
+                </div>
+            </div>
+        `;
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 800);
+});
+</script>
+
+</body>
+</html>
