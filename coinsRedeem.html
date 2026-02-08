@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Green Coin Redemption | Greeny</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Container */
+.container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.header p {
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+/* Grid */
+.grid {
+  display: flex;
+  justify-content: center;
+}
+
+/* Card */
+.card {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.06);
+}
+
+/* Highlight */
+.highlight {
+  background: #ecfdf5;
+}
+
+.card h3 {
+  margin-bottom: 25px;
+  font-size: 20px;
+}
+
+/* Balance */
+.balance {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.balance p {
+  font-size: 14px;
+  color: #065f46;
+}
+
+.balance h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #065f46;
+  margin-top: 6px;
+}
+
+/* Form */
+.redeem-form label {
+  font-size: 14px;
+  margin-top: 14px;
+  display: block;
+  font-weight: 500;
+}
+
+.redeem-form input,
+.redeem-form select {
+  width: 100%;
+  padding: 11px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+/* Button */
+.success-btn {
+  margin-top: 24px;
+  width: 100%;
+  padding: 12px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Note */
+.note {
+  display: block;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 13px;
+  color: #065f46;
+}
+</style>
+
+<body>
+
+  <div class="container">
+
+    <header class="header">
+      <h1>Green Coin Redemption</h1>
+      <p>Reward users instantly via UPI or Wallet</p>
+    </header>
+
+    <section class="grid">
+
+      <div class="card highlight">
+        <h3>Redeem Green Coins</h3>
+
+        <div class="balance">
+          <p>Available Green Coins</p>
+          <h2>5,420</h2>
+        </div>
+
+        <form class="redeem-form">
+          <label>Coins to Redeem</label>
+          <input type="number" id="coinsInput" placeholder="Enter green coins" required>
+
+          <label>Payment Method</label>
+          <select>
+            <option>Select Method</option>
+            <option>UPI</option>
+            <option>Wallet</option>
+          </select>
+
+          <label>UPI ID / Wallet ID</label>
+          <input type="text" placeholder="example@upi">
+
+          <button type="button" class="success-btn" onclick="redeemCoins()">
+  Confirm Redemption
+</button>
+
+        </form>
+
+        <small class="note">
+          💡 Coins are credited instantly after verification
+        </small>
+      </div>
+
+    </section>
+
+  </div>
+  <script>
+  function redeemCoins() {
+    const coins = document.getElementById("coinsInput").value;
+
+    if (!coins || coins <= 0) {
+      alert("Please enter a valid number of green coins");
+      return;
+    }
+
+    // store coins
+    localStorage.setItem("redeemedCoins", coins);
+
+    // redirect
+    window.location.href = "success.html";
+  }
+</script>
+
+
+</body>
+</html>

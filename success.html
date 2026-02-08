@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redemption Successful | Greeny</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #f0fdf4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #065f46;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  max-width: 420px;
+  width: 100%;
+}
+
+.card h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 16px;
+  color: #047857;
+  margin-bottom: 25px;
+}
+
+.amount {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.done-btn {
+  padding: 12px 24px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+</style>
+
+<body>
+
+  <div class="card">
+    <h1>✅ Redemption Successful</h1>
+    <p>You have successfully redeemed</p>
+
+    <div class="amount">
+      <span id="coins"></span> Coins
+    </div>
+
+    <button class="done-btn" onclick="goBack()">Done</button>
+  </div>
+
+  <script>
+    const coins = localStorage.getItem("redeemedCoins");
+    document.getElementById("coins").innerText = coins;
+
+    function goBack() {
+      window.location.href = "recycler.html";
+    }
+  </script>
+
+</body>
+</html>

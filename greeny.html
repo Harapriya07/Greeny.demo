@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Greeny.ai</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.chat-container {
+    width: 380px;
+    height: 600px;
+    background: #eef4f1;
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: #0f3d2e;
+    color: white;
+    padding: 16px;
+    text-align: center;
+}
+
+.chat-header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.chat-header p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 14px;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+.bubble {
+    max-width: 75%;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.user .bubble {
+    background: #2f8f5b;
+    color: #ffffff;
+    border-radius: 16px;
+    border-bottom-right-radius: 4px;
+}
+
+.bot .bubble {
+    background: #ffffff;
+    color: #1f2933;
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    background: #ffffff;
+    border-top: 1px solid #ddd;
+    align-items: center;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 24px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+}
+
+.upload-btn {
+    background: #2f8f5b;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.chat-input button {
+    background: #2f8f5b;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.chat-input button:hover,
+.upload-btn:hover {
+    background: #257a4b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+
+    <div class="chat-header">
+        <h1>Greeny 🤖</h1>
+        <p>Online • AI Powered</p>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+        <div class="message bot">
+            <div class="bubble">
+                Hi! I’m Greeny 🌱<br>
+                Ask me anything about waste segregation and recycling.
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input">
+        <label for="imageInput" class="upload-btn">📷</label>
+        <input type="file" id="imageInput" accept="image/*" hidden>
+
+        <input type="text" id="userInput" placeholder="Ask Greeny ...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script>
+const chatBody = document.getElementById("chatBody");
+const input = document.getElementById("userInput");
+
+function sendMessage() {
+    const message = input.value.trim();
+    if (!message) return;
+
+    chatBody.innerHTML += `
+        <div class="message user">
+            <div class="bubble">${message}</div>
+        </div>
+    `;
+    input.value = "";
+
+    generateBotReply(message);
+}
+
+input.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+});
+
+function generateBotReply(message) {
+    const msg = message.toLowerCase();
+    let reply = "";
+
+    if (msg.includes("plastic") || msg.includes("platic") || msg.includes("polythene")) {
+        reply = `
+        ♻️ <b>Plastic Waste</b><br>
+        Plastic is <b>dry recyclable waste</b>.<br>
+        👉 Rinse it to remove food residue<br>
+        👉 Flatten bottles if possible<br>
+        👉 Put it in the <b>dry bin</b><br>
+        🪙 You can earn Green Coins for recycling plastic!
+        `;
+    }
+
+    else if (msg.includes("food") || msg.includes("kitchen") || msg.includes("wet waste")) {
+        reply = `
+        🥬 <b>Food Waste</b><br>
+        Food waste is <b>wet waste</b>.<br>
+        👉 Includes leftovers, peels, vegetables<br>
+        👉 Put it in the <b>green/wet bin</b><br>
+        🌱 Can be composted into manure
+        `;
+    }
+
+    else if (msg.includes("battery") || msg.includes("charger") || msg.includes("mobile")) {
+        reply = `
+        🔋 <b>E-Waste</b><br>
+        Batteries and electronics are <b>hazardous</b>.<br>
+        👉 Do NOT put in dry or wet bins<br>
+        👉 Submit to authorized e-waste centers
+        `;
+    }
+
+    else if (msg.includes("hi") || msg.includes("hello")) {
+        reply = "Hello 👋 I’m Greeny 🌱 How can I help you recycle better today?";
+    }
+
+    else if (msg.includes("name")) {
+        reply = "I’m Greeny 🤖 — your AI assistant for waste segregation & sustainability 🌍";
+    }
+
+    else {
+        reply = `
+        🤔 I didn’t fully understand that.<br>
+        You can ask me about:
+        <ul>
+          <li>Plastic waste</li>
+          <li>Food / wet waste</li>
+          <li>E-waste</li>
+          <li>Recycling tips</li>
+        </ul>
+        `;
+    }
+
+    setTimeout(() => {
+        chatBody.innerHTML += `
+            <div class="message bot">
+                <div class="bubble">${reply}</div>
+            </div>
+        `;
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 500);
+}
+
+
+document.getElementById("imageInput").addEventListener("change", function() {
+    const file = this.files[0];
+    if (!file) return;
+
+    const imgURL = URL.createObjectURL(file);
+
+    chatBody.innerHTML += `
+        <div class="message user">
+            <div class="bubble">
+                <img src="${imgURL}" style="max-width:100%; border-radius:10px;">
+            </div>
+        </div>
+    `;
+
+    setTimeout(() => {
+        chatBody.innerHTML += `
+            <div class="message bot">
+                <div class="bubble">
+                    ♻️ AI Result:<br>
+                    This looks like <b>dry recyclable waste</b> (plastic).<br>
+                    Please rinse and place it in the dry bin.<br>
+                    🪙 Reward: 5 Green Coins
+                </div>
+            </div>
+        `;
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 800);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recycler Dashboard | Greeny</title>
+  <link rel="stylesheet" href="recycler.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>🌱 Greeny</h2>
+    <h2>Recycler</h2>
+    <nav>
+      <a class="active">Dashboard</a>
+      <a href="greeny.html">Greeny.AI</a>
+      <a href="scanner.html">Qr Scanner</a>
+      <a href="coinsRedeem.html">Green coins</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="header">
+      <h1>Recycler Dashboard</h1>
+      <span>Welcome back 👋</span>
+    </header>
+
+    <!-- KPI Cards -->
+    <section class="cards">
+      <div class="card">
+        <p>Total Waste Recycled</p>
+        <h3>12.4 Tons</h3>
+      </div>
+      <div class="card">
+        <p>Waste Bought</p>
+        <h3>8.1 Tons</h3>
+      </div>
+      <div class="card">
+        <p>Waste Transported</p>
+        <h3>10.2 Tons</h3>
+      </div>
+      <div class="card highlight">
+        <p>Green Coins Balance</p>
+        <h3>5,420</h3>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="grid">
+      <!-- Waste Collection -->
+      <div class="panel">
+        <h3>Weekly Waste Collection</h3>
+        <div class="bar-chart">
+          <div style="height:70%"></div>
+          <div style="height:55%"></div>
+          <div style="height:80%"></div>
+          <div style="height:60%"></div>
+          <div style="height:90%"></div>
+          <div style="height:75%"></div>
+          <div style="height:85%"></div>
+        </div>
+        <small>Mon → Sun</small>
+      </div>
+
+      <!-- Fuel & Profit -->
+      <div class="panel">
+        <h3>Fuel Cost vs Profit (Weekly)</h3>
+        <div class="bar-chart dual">
+          <div class="fuel" style="height:60%"></div>
+          <div class="profit" style="height:80%"></div>
+
+          <div class="fuel" style="height:65%"></div>
+          <div class="profit" style="height:85%"></div>
+
+          <div class="fuel" style="height:55%"></div>
+          <div class="profit" style="height:90%"></div>
+          <div class="fuel" style="height:60%"></div>
+          <div class="profit" style="height:80%"></div>
+
+          <div class="fuel" style="height:65%"></div>
+          <div class="profit" style="height:85%"></div>
+
+          <div class="fuel" style="height:55%"></div>
+          <div class="profit" style="height:90%"></div>
+        </div>
+        <small>Mon → Sun</small><br>
+        <small>Fuel (Gray) | Profit (Green)</small>
+      </div>
+    </section>
+
+    <!-- Route + Leaderboard -->
+    <section class="grid">
+      <!-- Route Map -->
+      <div class="panel map">
+        <h3>Collection Route Map</h3>
+        <div class="map-box">
+          <p>📍 Interactive route map will appear here</p>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="panel">
+        <h3>Top Societies</h3>
+        <ul class="leaderboard">
+          <li>🏆 Jagamara — 2,430 coins</li>
+          <li>🥈 Rasulgarh — 1,980 coins</li>
+          <li>🥉 Patia — 1,540 coins</li>
+          <li>🌱 Maitri vihar — 1,210 coins</li>
+          <li>🌱 jaydev vihar — 1,200 coins</li>
+          <li>🌱 Khandagiri — 1,150 coins</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
