@@ -168,87 +168,111 @@ function sendMessage() {
     const message = input.value.trim();
     if (!message) return;
 
-    chatBody.innerHTML += `
-        <div class="message user">
-            <div class="bubble">${message}</div>
-        </div>
-    `;
+    appendMessage(message, "user");
     input.value = "";
-
     generateBotReply(message);
 }
 
 input.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-        sendMessage();
-    }
+    if (e.key === "Enter") sendMessage();
 });
+
+function appendMessage(content, sender) {
+    chatBody.innerHTML += `
+        <div class="message ${sender}">
+            <div class="bubble">${content}</div>
+        </div>
+    `;
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
 
 function generateBotReply(message) {
     const msg = message.toLowerCase();
-    let reply = "";
-
-    if (msg.includes("plastic") || msg.includes("platic") || msg.includes("polythene")) {
-        reply = `
-        ♻️ <b>Plastic Waste</b><br>
-        Plastic is <b>dry recyclable waste</b>.<br>
-        👉 Rinse it to remove food residue<br>
-        👉 Flatten bottles if possible<br>
-        👉 Put it in the <b>dry bin</b><br>
-        🪙 You can earn Green Coins for recycling plastic!
-        `;
-    }
-
-    else if (msg.includes("food") || msg.includes("kitchen") || msg.includes("wet waste")) {
-        reply = `
-        🥬 <b>Food Waste</b><br>
-        Food waste is <b>wet waste</b>.<br>
-        👉 Includes leftovers, peels, vegetables<br>
-        👉 Put it in the <b>green/wet bin</b><br>
-        🌱 Can be composted into manure
-        `;
-    }
-
-    else if (msg.includes("battery") || msg.includes("charger") || msg.includes("mobile")) {
-        reply = `
-        🔋 <b>E-Waste</b><br>
-        Batteries and electronics are <b>hazardous</b>.<br>
-        👉 Do NOT put in dry or wet bins<br>
-        👉 Submit to authorized e-waste centers
-        `;
-    }
-
-    else if (msg.includes("hi") || msg.includes("hello")) {
-        reply = "Hello 👋 I’m Greeny 🌱 How can I help you recycle better today?";
-    }
-
-    else if (msg.includes("name")) {
-        reply = "I’m Greeny 🤖 — your AI assistant for waste segregation & sustainability 🌍";
-    }
-
-    else {
-        reply = `
-        🤔 I didn’t fully understand that.<br>
-        You can ask me about:
-        <ul>
-          <li>Plastic waste</li>
-          <li>Food / wet waste</li>
-          <li>E-waste</li>
-          <li>Recycling tips</li>
-        </ul>
-        `;
-    }
+    let result = analyzeWaste(msg);
 
     setTimeout(() => {
-        chatBody.innerHTML += `
-            <div class="message bot">
-                <div class="bubble">${reply}</div>
-            </div>
-        `;
-        chatBody.scrollTop = chatBody.scrollHeight;
-    }, 500);
+        appendMessage(result, "bot");
+    }, 600);
 }
 
+function analyzeWaste(text) {
+
+    let wasteData = null;
+
+    // ♻️ PLASTIC
+    if (text.includes("plastic") || text.includes("bottle") || text.includes("polythene")) {
+        wasteData = {
+            type: "Plastic (Dry Recyclable)",
+            bin: "Blue Bin (Dry Waste)",
+            future: "Recycled into new bottles, plastic furniture, or textile fiber.",
+            coins: 5
+        };
+    }
+
+    // 🥬 FOOD / WET
+    else if (text.includes("food") || text.includes("vegetable") || text.includes("kitchen") || text.includes("leftover")) {
+        wasteData = {
+            type: "Organic / Wet Waste",
+            bin: "Green Bin (Wet Waste)",
+            future: "Converted into compost or biogas.",
+            coins: 3
+        };
+    }
+
+    // 🔋 E-WASTE
+    else if (text.includes("battery") || text.includes("mobile") || text.includes("charger") || text.includes("electronic")) {
+        wasteData = {
+            type: "E-Waste (Hazardous)",
+            bin: "Red Bin / E-Waste Collection Center",
+            future: "Metals like copper & lithium extracted and reused.",
+            coins: 10
+        };
+    }
+
+    // 🧻 PAPER
+    else if (text.includes("paper") || text.includes("cardboard") || text.includes("newspaper")) {
+        wasteData = {
+            type: "Paper (Dry Recyclable)",
+            bin: "Blue Bin (Dry Waste)",
+            future: "Recycled into notebooks, cartons, packaging material.",
+            coins: 4
+        };
+    }
+
+    // 🥫 METAL
+    else if (text.includes("can") || text.includes("aluminium") || text.includes("metal")) {
+        wasteData = {
+            type: "Metal Waste",
+            bin: "Blue Bin (Dry Waste)",
+            future: "Melted and reused in manufacturing.",
+            coins: 7
+        };
+    }
+
+    if (wasteData) {
+        return `
+            <b>🔎 Waste Analysis Report</b><br><br>
+
+            <b>📦 Type:</b> ${wasteData.type}<br>
+            <b>🗑 Dispose In:</b> ${wasteData.bin}<br>
+            <b>🔄 Future Use:</b> ${wasteData.future}<br>
+            <b>🪙 Green Coins Earned:</b> ${wasteData.coins} Coins<br><br>
+
+            ♻️ Thank you for recycling responsibly!
+        `;
+    }
+
+    return `
+        <b>⚠️ Unable to Identify Waste</b><br><br>
+        Please mention the material type like:<br>
+        • Plastic bottle<br>
+        • Food waste<br>
+        • Battery<br>
+        • Paper<br>
+        • Metal can<br><br>
+        This helps calculate accurate Green Coins.
+    `;
+}
 
 document.getElementById("imageInput").addEventListener("change", function() {
     const file = this.files[0];
@@ -256,29 +280,25 @@ document.getElementById("imageInput").addEventListener("change", function() {
 
     const imgURL = URL.createObjectURL(file);
 
-    chatBody.innerHTML += `
-        <div class="message user">
-            <div class="bubble">
-                <img src="${imgURL}" style="max-width:100%; border-radius:10px;">
-            </div>
-        </div>
-    `;
+    appendMessage(
+        `<img src="${imgURL}" style="max-width:100%; border-radius:10px;">`,
+        "user"
+    );
 
+    // Simulated AI Image Detection
     setTimeout(() => {
-        chatBody.innerHTML += `
-            <div class="message bot">
-                <div class="bubble">
-                    ♻️ AI Result:<br>
-                    This looks like <b>dry recyclable waste</b> (plastic).<br>
-                    Please rinse and place it in the dry bin.<br>
-                    🪙 Reward: 5 Green Coins
-                </div>
-            </div>
-        `;
-        chatBody.scrollTop = chatBody.scrollHeight;
+        appendMessage(`
+            <b>🖼 AI Image Analysis</b><br><br>
+            📦 Type: Plastic Bottle (Dry Waste)<br>
+            🗑 Dispose In: Blue Bin<br>
+            🔄 Future Use: Recycled into polyester fiber<br>
+            🪙 Green Coins Earned: 5 Coins<br><br>
+            ♻️ Image processed successfully.
+        `, "bot");
     }, 800);
 });
 </script>
+
 
 </body>
 </html>
